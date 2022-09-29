@@ -18,6 +18,7 @@ $APPLICATION->SetTitle("Новости");
 		"CACHE_GROUPS" => "Y",
 		"CACHE_TIME" => "36000000",
 		"CACHE_TYPE" => "A",
+		"CANONICAL" => "5",
 		"CHECK_DATES" => "Y",
 		"DETAIL_ACTIVE_DATE_FORMAT" => "d.m.Y",
 		"DETAIL_DISPLAY_BOTTOM_PAGER" => "Y",

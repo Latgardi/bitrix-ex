@@ -6,7 +6,8 @@ IncludeTemplateLangFile(__FILE__);
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta property="specialdate" content="<?$APPLICATION->ShowProperty("specialdate", "100")?>">
+<meta property="specialdate" content="<?$APPLICATION->ShowProperty("specialdate", "100")?>">
+<?$APPLICATION->ShowProperty("canonical");?>
 <?$APPLICATION->ShowHead();?>
 <link href="<?=SITE_TEMPLATE_PATH?>/common.css" type="text/css" rel="stylesheet" />
 <link href="<?=SITE_TEMPLATE_PATH?>/colors.css" type="text/css" rel="stylesheet" />

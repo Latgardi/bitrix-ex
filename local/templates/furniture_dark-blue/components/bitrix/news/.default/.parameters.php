@@ -8,4 +8,10 @@ $arTemplateParameters = array(
 		"TYPE" => "CHECKBOX",
 		"DEFAULT" => "N",
 	),
+	"CANONICAL" => array(
+		"PARENT" => "BASE",
+		"NAME" => GetMessage("CANONICAL"),
+		"TYPE" => "STRING",
+		"DEFAULT" => "",
+	),
 );
