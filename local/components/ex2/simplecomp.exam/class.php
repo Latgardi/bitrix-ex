@@ -19,9 +19,6 @@ class SimpleComp extends  CBitrixComponent
 		if(!isset($arParams["PRODUCTS_IBLOCK_ID"])) {
 			$arParams["PRODUCTS_IBLOCK_ID"] = 2;
 		}
-		if(!isset($arParams["PRODUCTS_IBLOCK_PROPERTY"])) {
-			$arParams["PRODUCTS_IBLOCK_PROPERTY"] = "UF_NEWS_LINK";
-		}
 
 		return $arParams;
 	}
@@ -103,6 +100,29 @@ class SimpleComp extends  CBitrixComponent
 		);
 
 		while ($row = $obProducts->GetNext()) {
+			$arButtons = CIBlock::GetPanelButtons(
+				$row["IBLOCK_ID"],
+				$row["ID"],
+				$row["IBLOCK_SECTION_ID"],
+				array("SECTION_BUTTONS"=>false, "SESSID"=>false)
+			);
+			$this->AddEditAction(
+				$row["ID"],
+				$arButtons["edit"]["add_element"]["ACTION_URL"],
+				CIBlock::GetArrayByID($row["IBLOCK_ID"], "ELEMENT_ADD")
+			);
+			$this->AddEditAction(
+				$row["ID"],
+				$arButtons["edit"]["edit_element"]["ACTION_URL"],
+				CIBlock::GetArrayByID($row["IBLOCK_ID"], "ELEMENT_EDIT")
+			);
+			$this->AddDeleteAction(
+				$row["ID"],
+				$arButtons["edit"]["delete_element"]["ACTION_URL"],
+				CIBlock::GetArrayByID($row["IBLOCK_ID"], "ELEMENT_DELETE"),
+				array("CONFIRM" => GetMessage("CT_BCS_ELEMENT_DELETE_CONFIRM"))
+			);
+
 			foreach ($this->arSections[$row["IBLOCK_SECTION_ID"]][$this->arParams["PRODUCTS_IBLOCK_PROPERTY"]] as $newsID) {
 				$this->arNews[$newsID]["PRODUCTS"][] = $row;
 			}

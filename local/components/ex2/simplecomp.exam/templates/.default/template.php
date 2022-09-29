@@ -13,10 +13,12 @@
                 <ul>
                     <? foreach ($arNews["PRODUCTS"] as $arProduct): ?>
                         <li>
-							<?=$arProduct["NAME"]?> –
-							<?=$arProduct["PROPERTY_PRICE_VALUE"]?> –
-							<?=$arProduct["PROPERTY_MATERIAL_VALUE"]?> –
-							<?=$arProduct["PROPERTY_ARTNUMBER_VALUE"]?>
+                            <div id="<?=$this->GetEditAreaId($arProduct["ID"])?>">
+								<?=$arProduct["NAME"]?> –
+								<?=$arProduct["PROPERTY_PRICE_VALUE"]?> –
+								<?=$arProduct["PROPERTY_MATERIAL_VALUE"]?> –
+								<?=$arProduct["PROPERTY_ARTNUMBER_VALUE"]?>
+                            </div>
                         </li>
                     <? endforeach; ?>
                 </ul>
