@@ -3,7 +3,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 class SimpleComp extends  CBitrixComponent
 {
-	private const DETAIL_LINK_TEMPLATE = "детальный просмотр";
+	private const DETAIL_LINK_TEMPLATE = "catalog_exam/#SECTION_ID#/#ELEMENT_CODE#";
 	private array $arFirms;
 	private array $arFirmsID;
 
@@ -60,7 +60,10 @@ class SimpleComp extends  CBitrixComponent
 	private function linkProducts(): void
 	{
 			$obProducts = CIBlockElement::GetList(
-				array(),
+				array(
+					"NAME" => "ASC",
+					"SORT" => "ASC",
+				),
 				array(
 					"IBLOCK_ID" => $this->arParams["PRODUCTS_IBLOCK_ID"],
 					"PROPERTY_" . $this->arParams["PRODUCT_PROPERTY"] => $this->arFirmsID,
@@ -70,12 +73,25 @@ class SimpleComp extends  CBitrixComponent
 				array(
 					"NAME",
 					"IBLOCK_ID",
+					"IBLOCK_SECTION_ID",
+					"CODE",
 					"ID",
-					"DETAIL_PAGE_URL",
 				)
 			);
 			while ($element = $obProducts->GetNextElement()) {
 				$fields = $element->GetFields();
+				$detailURL = str_replace(
+					array(
+						"#SECTION_ID#",
+						"#ELEMENT_CODE#",
+					),
+					array(
+						$fields["IBLOCK_SECTION_ID"],
+						$fields["CODE"] . ".php",
+					),
+					$this->arParams["DETAIL_LINK_TEMPLATE"]
+				);
+				$fields["DETAIL_PAGE_URL"] = "/" . $detailURL;
 				$fields["PROPERTIES"] = $element->GetProperties();
 				foreach ($fields["PROPERTIES"]["FIRM"]["VALUE"] as $firmID) {
 					$this->arFirms[$firmID]["PRODUCTS"][] = $fields;

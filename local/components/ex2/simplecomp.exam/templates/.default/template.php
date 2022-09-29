@@ -14,8 +14,7 @@
 							<?=$arProduct["NAME"]?> –
 							<?=$arProduct["PROPERTIES"]["PRICE"]["VALUE"]?> –
 							<?=$arProduct["PROPERTIES"]["MATERIAL"]["VALUE"]?> –
-                            <a href="<?=$arProduct["DETAIL_PAGE_URL"]?>"><?=$arResult["DETAIL_LINK_TEMPLATE"]?></a>
-                        </li>
+                            (<?=$arProduct["DETAIL_PAGE_URL"]?>)</li>
                     <? endforeach; ?>
                 </ul>
             <? endif;
