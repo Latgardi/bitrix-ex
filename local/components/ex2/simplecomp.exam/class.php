@@ -19,9 +19,6 @@ class SimpleComp extends  CBitrixComponent
 		if(!isset($arParams["PRODUCTS_IBLOCK_ID"])) {
 			$arParams["PRODUCTS_IBLOCK_ID"] = 2;
 		}
-		if(!isset($arParams["PRODUCTS_IBLOCK_PROPERTY"])) {
-			$arParams["PRODUCTS_IBLOCK_PROPERTY"] = "UF_NEWS_LINK";
-		}
 
 		return $arParams;
 	}
@@ -32,6 +29,7 @@ class SimpleComp extends  CBitrixComponent
 
 		$this->getResult();
 		$APPLICATION->SetTitle(GetMessage("SIMPLECOMP_EXAM2_TITLE") . $this->arResult["PRODUCT_CNT"]);
+		$this->addToolbarButton();
 		$this->includeComponentTemplate();
 	}
 
@@ -125,6 +123,19 @@ class SimpleComp extends  CBitrixComponent
 				$this->arNews[$newsID]["SECTIONS"][] = $section["NAME"];
 			}
 		}
+	}
+
+	private function addToolbarButton(): void
+	{
+		$arButtons = CIBlock::GetPanelButtons($this->arParams["PRODUCTS_IBLOCK_ID"]);
+		$this->AddIncludeAreaIcon(
+			array(
+				'URL'   => $arButtons["submenu"]["element_list"]["ACTION_URL"],
+				'TITLE' => "ИБ в админке",
+				"IN_PARAMS_MENU" => true
+
+			)
+		);
 	}
 
 	private function getResult(): void
