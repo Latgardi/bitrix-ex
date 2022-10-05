@@ -1,4 +1,5 @@
 <?php
+use \Bitrix\Main\UI\PageNavigation;
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 class SimpleComp extends  CBitrixComponent
@@ -6,6 +7,7 @@ class SimpleComp extends  CBitrixComponent
 	private const DETAIL_LINK_TEMPLATE = "детальный просмотр";
 	private array $arFirms;
 	private array $arFirmsID;
+	public PageNavigation $nav;
 
 	public function onPrepareComponentParams($arParams): array
 	{
@@ -24,12 +26,16 @@ class SimpleComp extends  CBitrixComponent
 		if (!isset($arParams["PRODUCT_PROPERTY"])) {
 			$arParams["PRODUCT_PROPERTY"] = "FIRM";
 		}
+		if (!isset($arParams["PAGE_SIZE"])) {
+			$arParams["PAGE_SIZE"] = 2;
+		}
 
 		return $arParams;
 	}
 
 	public function executeComponent()
 	{
+		\Bitrix\Main\Loader::includeModule('iblock');
 		global $APPLICATION;
 
 		$this->getResult();
@@ -39,19 +45,23 @@ class SimpleComp extends  CBitrixComponent
 
 	private function getFirms(): void
 	{
-		$obFirms = CIBlockElement::GetList(
-			array(),
+		global $APPLICATION;
+
+		$this->nav = new PageNavigation("nav-more-firms");
+		$this->nav->allowAllRecords(true)
+			->setPageSize(1)
+			->initFromUri();
+		$result = \Bitrix\Iblock\ElementTable::getList(
 			array(
-				"IBLOCK_ID" => $this->arParams["FIRMS_IBLOCK_ID"],
-			),
-			false,
-			false,
-			array(
-				"NAME",
-				"ID",
-			)
-		);
-		while ($row = $obFirms->GetNext()) {
+				"select" => ["NAME", "ID"],
+				"filter" => array("=IBLOCK_ID"=>$this->arParams["FIRMS_IBLOCK_ID"]),
+				"count_total" => true,
+				"offset" => $this->nav->getOffset(),
+				"limit" => $this->nav->getLimit()
+			));
+
+		$this->nav->setRecordCount($result->getCount());
+		while ($row = $result->fetch()) {
 			$this->arFirmsID[] = $row["ID"];
 			$this->arFirms[$row["ID"]] = $row;
 		}
@@ -59,6 +69,7 @@ class SimpleComp extends  CBitrixComponent
 
 	private function linkProducts(): void
 	{
+		global $APPLICATION;
 			$obProducts = CIBlockElement::GetList(
 				array(),
 				array(
@@ -66,7 +77,9 @@ class SimpleComp extends  CBitrixComponent
 					"PROPERTY_" . $this->arParams["PRODUCT_PROPERTY"] => $this->arFirmsID,
 				),
 				false,
-				false,
+				array(
+					"nPageSize" => $this->arParams["PAGE_SIZE"],
+				),
 				array(
 					"NAME",
 					"IBLOCK_ID",
@@ -99,6 +112,7 @@ class SimpleComp extends  CBitrixComponent
 			$this->getCount();
 			$this->arResult["FIRMS"] = $this->arFirms;
 			$this->arResult["DETAIL_LINK_TEMPLATE"] = $this->arParams["DETAIL_LINK_TEMPLATE"];
+			print_r($this->arResult["DETAIL_LINK_TEMPLATE"]);
 		}
 	}
 }

@@ -24,4 +24,12 @@ $arUrlRewrite=array (
     'PATH' => '/news/index.php',
     'SORT' => 100,
   ),
+  3 => 
+  array (
+    'CONDITION' => '#^#',
+    'RULE' => '',
+    'ID' => 'bitrix:main.pagenavigation',
+    'PATH' => '/local/components/ex2/simplecomp.exam/templates/.default/template.php',
+    'SORT' => 100,
+  ),
 );

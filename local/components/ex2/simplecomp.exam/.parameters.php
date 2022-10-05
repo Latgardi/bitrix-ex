@@ -22,6 +22,11 @@ $arComponentParameters = array(
 			"PARENT" => "BASE",
 			"TYPE" => "STRING",
 		),
+		"PAGE_SIZE" => array(
+			"NAME" => GetMessage("SIMPLECOMP_EXAM2_PAGE_SIZE"),
+			"PARENT" => "BASE",
+			"TYPE" => "INT",
+		),
 		"CACHE_TIME" => array("DEFAULT" => 36000000),
 	),
 
