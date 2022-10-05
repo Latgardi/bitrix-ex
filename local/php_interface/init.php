@@ -5,11 +5,15 @@ class EventHandlers
 {
 	public function deactivateBlockElement(array &$arFields)
 	{
-		if ($arFields["IBLOCK_ID"] == 2 && $arFields["ACTIVE"] == "N") {
-			$count = $arFields["SHOW_COUNTER"];
-			if ($count > 2) {
+		$productsIBlockID = 2;
+
+		if ($arFields["IBLOCK_ID"] == $productsIBlockID && $arFields["ACTIVE"] == "N") {
+			$iblock = \Bitrix\Iblock\Iblock::wakeUp($productsIBlockID)->getEntityDataClass();
+			$element = $iblock::getById($arFields["ID"])->fetchObject();
+			$counter = $element->get("SHOW_COUNTER");
+			if ($counter > 2) {
 				global $APPLICATION;
-				$APPLICATION->throwException("Товар невозможно деактивировать, у него $count просмотров");
+				$APPLICATION->throwException("Товар невозможно деактивировать, у него $counter просмотров");
 				return false;
 			}
 		}
